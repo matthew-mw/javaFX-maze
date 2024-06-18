@@ -52,27 +52,26 @@ class Maze:
 
     def solve_maze(self, start: Cell, end: Cell) -> list:
         stack = [start]
-        parent = {}
         while stack:
             current = stack.pop()
             if current == end:
                 path = []
-                current = end
                 while current != start:
                     path.append(current)
-                    current = parent[current]
-                yield path[::-1]
+                    current = current.parent
+                yield False
+                break
             current.visited = True
             if current.up and current.upConnected and not current.up.visited:
                 stack.append(current.up)
-                parent[current.up] = current
+                current.up.parent = current
             if current.down and current.downConnected and not current.down.visited:
                 stack.append(current.down)
-                parent[current.down] = current
+                current.down.parent = current
             if current.left and current.leftConnected and not current.left.visited:
                 stack.append(current.left)
-                parent[current.left] = current
+                current.left.parent = current
             if current.right and current.rightConnected and not current.right.visited:
                 stack.append(current.right)
-                parent[current.right] = current
-            yield self.maze
+                current.right.parent = current
+            yield (current, current.parent)

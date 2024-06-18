@@ -12,3 +12,4 @@ class Cell:
         self.right = None
         self.rightConnected = False
         self.visited = False
+        self.parent = None
